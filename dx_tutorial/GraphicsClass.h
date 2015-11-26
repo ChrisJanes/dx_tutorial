@@ -2,6 +2,10 @@
 
 #include <Windows.h>
 #include "d3dclass.h"
+#include "CameraClass.h"
+#include "ModelClass.h"
+#include "ColourShaderClass.h"
+
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -22,6 +26,9 @@ private:
 	bool Render();
 
 	D3DClass *D3D;
+	CameraClass* Camera;
+	ModelClass* Model;
+	ColourShaderClass* ColourShader;
 
 };
 
