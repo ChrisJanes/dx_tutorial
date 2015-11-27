@@ -29,7 +29,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes, numerator, denominator, stringLength;
+	unsigned int numModes, numerator, denominator;
+	size_t stringLength;
 	DXGI_ADAPTER_DESC adapterDescription;
 	DXGI_MODE_DESC* displayModeList;
 	int error;
@@ -110,7 +111,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	videoCardMemory = (int)(adapterDescription.DedicatedVideoMemory / 1024 / 1024);
 
 	// convert the video card name into a char array
-	error = wcstombs_s(&stringLength, videoCardDescription, 128, adapterDescription.Description, 128);
+	error = wcstombs_s(&stringLength, videoCardDescription, (size_t)128, adapterDescription.Description, (size_t)128);
 	if (error != 0)
 	{
 		return false;

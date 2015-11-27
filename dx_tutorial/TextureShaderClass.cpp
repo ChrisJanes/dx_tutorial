@@ -111,7 +111,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device, HWND hwnd, WCHAR
 	// create the vertex input layout description
 	polygonLayout[0].SemanticName = "POSITION";
 	polygonLayout[0].SemanticIndex = 0;
-	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	polygonLayout[0].InputSlot = 0;
 	polygonLayout[0].AlignedByteOffset = 0;
 	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -121,7 +121,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device *device, HWND hwnd, WCHAR
 	polygonLayout[1].SemanticIndex = 0;
 	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	polygonLayout[1].InputSlot = 0;
-	polygonLayout[1].AlignedByteOffset = 12;
+	polygonLayout[1].AlignedByteOffset = 12; // set to 12 because POSITION is float3 (3 x 4 bytes)
 	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[1].InstanceDataStepRate = 0;
 
@@ -266,7 +266,7 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext *deviceContext,
 
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &matrixBuffer);
 
-	deviceContext->PSGetShaderResources(0, 1, &texture);
+	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	return true;
 }
