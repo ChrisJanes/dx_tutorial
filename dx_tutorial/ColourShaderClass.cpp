@@ -61,7 +61,7 @@ bool ColourShaderClass::InitializeShader(ID3D11Device *device, HWND hwnd, WCHAR 
 	pixelShaderBuffer = NULL;
 
 	// compile the vertex shader
-	result = D3DCompileFromFile(vsFilename, NULL, NULL, "main", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(vsFilename, NULL, NULL, "main", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG, 0,
 		&vertexShaderBuffer, &errorMessage);
 
 	if (FAILED(result))
@@ -79,7 +79,7 @@ bool ColourShaderClass::InitializeShader(ID3D11Device *device, HWND hwnd, WCHAR 
 	}
 
 	// compile the pixel shader
-	result = D3DCompileFromFile(psFilename, NULL, NULL, "main", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(psFilename, NULL, NULL, "main", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG, 0,
 		&pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
@@ -185,7 +185,7 @@ void ColourShaderClass::ShutdownShader()
 void ColourShaderClass::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND hwnd, WCHAR *shaderFilename)
 {
 	char* compileErrors;
-	unsigned long long bufferSize;
+	unsigned long bufferSize;
 	ofstream fout;
 
 	// get a pointer

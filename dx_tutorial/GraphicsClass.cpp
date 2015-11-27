@@ -35,7 +35,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!Camera)
 		return false;
 
-	Camera->SetPosition(0.0f, 0.0f, -5.0f);
+	Camera->SetPosition(0.0f, 0.0f, -10.0f);
 
 	Model = new ModelClass();
 	if (!Model)
@@ -44,7 +44,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	result = Model->Initialize(D3D->GetDevice());
 	if (!result)
 	{
-		MessageBox(hwnd, L"Coult not initialize model object", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize model object", L"Error", MB_OK);
 		return false;
 	}
 

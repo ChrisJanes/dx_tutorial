@@ -111,7 +111,8 @@ bool SystemClass::Frame()
 	return true;
 }
 
-LRESULT SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+
+LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
 	switch (umsg)
 	{
@@ -196,7 +197,8 @@ void SystemClass::InitializeWindow(int& screenWidth, int& screenHeight)
 	}
 
 	// create the window using the above settings.
-	hWnd = CreateWindowEx(WS_EX_APPWINDOW, applicationName, applicationName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+	hWnd = CreateWindowEx(WS_EX_APPWINDOW, applicationName, applicationName,
+	 	WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
 		posX, posY, screenWidth, screenHeight, NULL, NULL, hInstance, NULL);
 
 	// bring the window up and give it focus
