@@ -7,7 +7,7 @@ GraphicsClass::GraphicsClass()
 	D3D = NULL;
 	Camera = NULL;
 	Model = NULL;
-	ColourShader = NULL;
+	TextureShader = NULL;
 }
 
 
@@ -35,7 +35,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!Camera)
 		return false;
 
-	Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
 	Model = new ModelClass();
 	if (!Model)
@@ -48,11 +48,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	ColourShader = new ColourShaderClass();
-	if (!ColourShader)
+	TextureShader = new TextureShaderClass();
+	if (!TextureShader)
 		return false;
 
-	result = ColourShader->Initialize(D3D->GetDevice(), hwnd);
+	result = TextureShader->Initialize(D3D->GetDevice(), hwnd);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the shader object", L"Error", MB_OK);
@@ -64,11 +64,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	if (ColourShader)
+	if (TextureShader)
 	{
-		ColourShader->Shutdown();
-		delete ColourShader;
-		ColourShader = NULL;
+		TextureShader->Shutdown();
+		delete TextureShader;
+		TextureShader = NULL;
 	}
 
 	if (Model)
@@ -116,7 +116,7 @@ bool GraphicsClass::Render()
 
 	Model->Render(D3D->GetDeviceContext());
 
-	result = ColourShader->Render(D3D->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	result = TextureShader->Render(D3D->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
 	if (!result)
 		return false;
 

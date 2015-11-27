@@ -6,6 +6,7 @@ ModelClass::ModelClass()
 {
 	vertexBuffer = NULL;
 	indexBuffer = NULL;
+	texture = NULL;
 }
 
 ModelClass::ModelClass(const ModelClass &)
@@ -16,17 +17,24 @@ ModelClass::~ModelClass()
 {
 }
 
-bool ModelClass::Initialize(ID3D11Device * device)
+bool ModelClass::Initialize(ID3D11Device * device, WCHAR* filename)
 {
 	bool result;
 
 	result = InitializeBuffers(device);
 	
+	if (!result)
+		return false;
+
+	result = LoadTexture(device, filename);
+
 	return result;
 }
 
 void ModelClass::Shutdown()
 {
+	ReleaseTexture();
+
 	ShutdownBuffers();
 }
 
@@ -39,6 +47,11 @@ void ModelClass::Render(ID3D11DeviceContext * deviceContext)
 int ModelClass::GetIndexCount()
 {
 	return indexCount;
+}
+
+ID3D11ShaderResourceView * ModelClass::GetTexture()
+{
+	return texture->GetTexture();
 }
 
 // usually this would read in and load a model file, but this is just going to hard code a triangle.
@@ -66,13 +79,13 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 
 	// load the vertex array with data
 	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f); // bottom left
-	vertices[0].colour = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
 
 	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f); // top middle
-	vertices[1].colour = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].texture = XMFLOAT2(0.5f, 0.0f);
 
 	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f); // bottom right
-	vertices[2].colour = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
 
 	// load the vertices into the index array
 	indices[0] = 0;
@@ -149,6 +162,30 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext * deviceContext)
 	offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+bool ModelClass::LoadTexture(ID3D11Device * device, WCHAR * filename)
+{
+	bool result;
+
+	texture = new TextureClass();
+	if (!texture)
+		return false;
+
+	result = texture->Initialize(device, filename);
+
+	return result;
+}
+
+void ModelClass::ReleaseTexture()
+{
+	if (texture)
+	{
+		texture->Shutdown();
+		delete texture;
+		texture = NULL;
+	}
 }
