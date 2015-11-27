@@ -41,7 +41,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!Model)
 		return false;
 
-	result = Model->Initialize(D3D->GetDevice());
+	result = Model->Initialize(D3D->GetDevice(), L"../dx_tutorial/assets/rock.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize model object", L"Error", MB_OK);
@@ -116,7 +116,7 @@ bool GraphicsClass::Render()
 
 	Model->Render(D3D->GetDeviceContext());
 
-	result = TextureShader->Render(D3D->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	result = TextureShader->Render(D3D->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, Model->GetTexture());
 	if (!result)
 		return false;
 

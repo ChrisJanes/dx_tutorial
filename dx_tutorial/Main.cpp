@@ -1,4 +1,4 @@
-
+#define _WIN32_WINNT 0x0601
 #include "SystemClass.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
